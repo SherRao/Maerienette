@@ -11,19 +11,15 @@ public class Floor extends BaseEntity<PolygonShape> {
 
 	public Floor(GameApp game, MainScreen screen) {
 		super(game, screen);
-	
-	}
 
-	@Override
-	public void init() {
 		shape = new PolygonShape();
 		shape.setAsBox(2000, 25);
-		
+
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set(0, 25);
 		body = world.createBody(bodyDef);
 		body.setUserData("floor");
-		
+
 		fixtureDef.shape = shape;
 		fixtureDef.density = 100f;
 		fixtureDef.friction = 0f;
@@ -31,22 +27,22 @@ public class Floor extends BaseEntity<PolygonShape> {
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData("floor");
 		shape.dispose();
-		
+
 	}
 
 	@Override
 	public void tick() {
-		
+
 	}
 
 	@Override
 	public void draw() {
-		
+
 	}
 
 	@Override
 	public void destroy() {
-		
+
 	}
 
 }

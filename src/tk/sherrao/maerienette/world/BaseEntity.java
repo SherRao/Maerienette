@@ -41,8 +41,6 @@ public abstract class BaseEntity<T extends Shape> extends GameComponent {
 		
 	}
 	
-	public abstract void init();
-
 	public abstract void tick();
 	
 	public abstract void draw();

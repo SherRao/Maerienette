@@ -17,10 +17,6 @@ public class TestBox extends BaseEntity<PolygonShape>{
 	public TestBox(final GameApp game, MainScreen screen) {
 		super(game, screen);
 
-	}
-
-	@Override
-	public void init() {
 		image = new Image( new Texture( Gdx.files.internal("test/box.png") ) );
 		image.setSize(100, 100); //730 x 1330  / 4
 		
@@ -42,7 +38,9 @@ public class TestBox extends BaseEntity<PolygonShape>{
 		shape.dispose();
 
 		screen.getWorldStage().addActor(image);
+		
 	}
+
 
 	@Override
 	public void tick() {

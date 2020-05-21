@@ -4,12 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import net.dermetfan.gdx.graphics.g2d.AnimatedSprite;
 import tk.sherrao.maerienette.GameApp;
 import tk.sherrao.maerienette.InputPoller;
 import tk.sherrao.maerienette.screens.MainScreen;
@@ -18,40 +17,21 @@ import tk.sherrao.maerienette.world.InteractableEntity;
 
 public class Player extends BaseEntity<PolygonShape> implements InputProcessor {
 
+	enum PlayerState { WALKING, TALKING, IDLE }
+	
 	private InputPoller input;
 	
-	private Image image;
+	private AnimatedSprite sprite;
+	private Animation runningAnimation;
+	private Animation idleAnimation;
 	
-	private float frameTime;
-	private TextureAtlas runningAtlas;
-	private TextureAtlas idleAtlas;
-	private TextureAtlas jumpingAtlas;
-	private Animation<Sprite> runningAnimation;
-	private Animation<Sprite> idleAnimation;
-	private Animation<Sprite> jumpingAnimation;
-	
+	public PlayerState state;
 	public InteractableEntity nearestInteractable;
 	
 	public Player(final GameApp game, MainScreen screen) {
 		super(game, screen);
-
-	}
-
-	@Override
-	public void init() {
-		input = game.getInputPoller();
 		
-		image = new Image( new Texture( Gdx.files.internal("test/MC.png") ));
-		image.setSize(183, 333); //730 x 1330  / 4
-		/**
-		frameTime = 1/60f;
-		runningAtlas = new TextureAtlas();
-		idleAtlas = new TextureAtlas();
-		jumpingAtlas = new TextureAtlas();
-		runningAnimation = new Animation<Sprite>(frameTime, runningAtlas.createSprites());
-		idleAnimation = new Animation<Sprite>(frameTime, idleAtlas.createSprites());
-		jumpingAnimation = new Animation<Sprite>(frameTime, jumpingAtlas.createSprites());
-		*/
+		input = game.getInputPoller();
 		
 		shape = new PolygonShape();
 		shape.setAsBox(183/2, 333/2);
@@ -70,18 +50,16 @@ public class Player extends BaseEntity<PolygonShape> implements InputProcessor {
 		shape.dispose();
 		
 		screen.getWorldStage().addActor(image);
-		
 	}
+
 	
 	@Override
 	public void tick() {
-		body.setLinearVelocity(0f, 0f);
 		if(input.keyPress("left"))
 			body.setLinearVelocity(-500f, 0f);
 		
 		if(input.keyPress("right"))
 			body.setLinearVelocity(500f, 0f);
-		image.setBounds(body.getPosition().x - (183/2), body.getPosition().y - (333/2), 183, 333);
 		
 	}
 
@@ -113,12 +91,6 @@ public class Player extends BaseEntity<PolygonShape> implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		//if(input.isLeftKey(keycode) || input.isRightKey(keycode)) {
-		//	body.setLinearVelocity(0, 0);
-		//	return true;
-		//
-		//}
-		
 		return false;
 	}
 
