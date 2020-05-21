@@ -1,10 +1,10 @@
 package tk.sherrao.maerienette;
 
-public abstract class GameAppComponent {
+public abstract class GameComponent {
 
 	protected final GameApp game;
 	
-	public GameAppComponent(final GameApp game) {
+	public GameComponent(final GameApp game) {
 		this.game = game;
 		
 	}

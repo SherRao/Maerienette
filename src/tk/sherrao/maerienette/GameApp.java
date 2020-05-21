@@ -77,9 +77,10 @@ public class GameApp extends Game {
 		updateData();
 		updateDebugOverlay();
 		
-		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) 
+		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			super.setScreen(null);
 			Gdx.app.exit();
+		}
 		
 	}
 	

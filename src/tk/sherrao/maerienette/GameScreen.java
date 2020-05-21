@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public abstract class GameScreen extends GameAppComponent implements Screen {
+public abstract class GameScreen extends GameComponent implements Screen {
 
 	/** General */
 	protected final InputPoller input;

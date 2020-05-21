@@ -45,10 +45,6 @@ public class MainScreen extends GameScreen implements ContactListener {
 	public MainScreen(GameApp game) {
 		super(game);
 	
-	}
-	
-	@Override
-	public void show() {
 		renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
 		worldStage = new Stage(view, batch);
 		guiStage = new Stage(view, batch);
@@ -66,15 +62,22 @@ public class MainScreen extends GameScreen implements ContactListener {
 		box = new TestBox(game, this);
 		box.init();
 		
-		label = new TypingLabel("{EASE}this is a test label", new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas("uiskin.atlas")) );
-		label.setColor(Color.WHITE);
-		label.setBounds(400, 400, 200, 50);
+		dialogue = new TypingLabel("{EASE}this is a test label", new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas("uiskin.atlas")) );
+		dialogue.setColor(Color.WHITE);
+		dialogue.setBounds(400, 400, 200, 50);
 		
 		backgroundMusic = Gdx.audio.newMusic( Gdx.files.internal("test/musictest.mp3") );
 		backgroundMusic.setVolume(.2f);
 		backgroundMusic.play();
 		
-		guiStage.addActor(label);
+		guiStage.addActor(dialogue);
+		
+	}
+	
+	@Override
+	public void show() {
+		worldStage.addAction(Actions.fadeIn(1f));
+		guiStage.addAction(Actions.fadeIn(1f));
 		
 	}
 	
@@ -84,18 +87,14 @@ public class MainScreen extends GameScreen implements ContactListener {
 		floor.tick();
 		box.tick();
 		
-		camera.position.set(player.getPosition().x, player.getPosition().y, 0);
+		camera.position.set(player.getPosition().x, camera.position.y, camera.position.z);
 		camera.update();
 		world.step(1/60f, 6, 2);
 		worldStage.act();
 		guiStage.act();
 		
-		if(Gdx.input.isKeyJustPressed(Keys.M))
-			label.restart();
-		
 		worldStage.setDebugAll(game.isDebug());
 		guiStage.setDebugAll(game.isDebug());
-		
 	}
 
 	@Override
@@ -116,7 +115,6 @@ public class MainScreen extends GameScreen implements ContactListener {
 		shape.setColor(Color.RED);
 		shape.circle(Gdx.input.getX(), -Gdx.input.getY(), 20);
 		shape.end();
-		
 	}
 	
 	@Override

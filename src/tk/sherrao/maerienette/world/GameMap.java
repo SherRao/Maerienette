@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import tk.sherrao.maerienette.GameApp;
-import tk.sherrao.maerienette.GameAppComponent;
+import tk.sherrao.maerienette.GameComponent;
 
-public abstract class GameMap extends GameAppComponent {
+public abstract class GameMap extends GameComponent {
 
 	protected final World world;
 	protected final List<BaseEntity> activeEntities;

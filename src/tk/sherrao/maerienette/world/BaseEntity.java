@@ -10,10 +10,10 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import tk.sherrao.maerienette.GameApp;
-import tk.sherrao.maerienette.GameAppComponent;
+import tk.sherrao.maerienette.GameComponent;
 import tk.sherrao.maerienette.screens.MainScreen;
 
-public abstract class BaseEntity<T extends Shape> extends GameAppComponent {
+public abstract class BaseEntity<T extends Shape> extends GameComponent {
 
 	protected final MainScreen screen;
 	protected final World world;

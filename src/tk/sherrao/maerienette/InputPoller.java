@@ -11,7 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 
-public class InputPoller extends GameAppComponent {
+public class InputPoller extends GameComponent {
 
 	private final InputMultiplexer inputs;
 	private Map<String, Integer> keyMap;

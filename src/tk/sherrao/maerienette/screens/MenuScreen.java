@@ -44,9 +44,11 @@ public class MenuScreen extends GameScreen {
 		stage.addActor(credits);
 		stage.addActor(quit);
 		stage.addActor(copyright);
+		stage.addActor(soundVolume);
+		stage.addActor(musicVolume);
 		input.addInputSource(stage);
 		
-		addButtonLiseners();
+		addButtonListeners();
 		
 	}
 
@@ -89,7 +91,6 @@ public class MenuScreen extends GameScreen {
 				game.setScreen( game.findScreen("game") );
 				
 			}
-			
 		} );
 
 		credits.addListener( new ClickListener() {
@@ -98,16 +99,14 @@ public class MenuScreen extends GameScreen {
 				game.setScreen( game.findScreen("credits") );
 				
 			}
-			
 		} );
 		
 		quit.addListener( new ClickListener() {
 			@Override
-			public void clicked (InputEvent event, float x, float y) {
+			public void clicked(InputEvent event, float x, float y) {
 				game.stop();
 				
 			}
-			
 		} );
 		
 	}
