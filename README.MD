@@ -1,5 +1,5 @@
 # Maerienette
-An upcoming game created by AEVEUM Studios
+An upcoming game created by ÆRSENUS Studios
 
 # Dependencies
 - LibGDX: https://libgdx.badlogicgames.com/
