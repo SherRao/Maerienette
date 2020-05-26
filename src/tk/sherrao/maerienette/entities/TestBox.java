@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import tk.sherrao.maerienette.GameApp;
 import tk.sherrao.maerienette.screens.MainScreen;
-import tk.sherrao.maerienette.world.BaseEntity;
+import tk.sherrao.maerienette.world.AbstractEntity;
 
-public class TestBox extends BaseEntity<PolygonShape>{
+public class TestBox extends AbstractEntity<PolygonShape>{
 
 	private Image image;
 	
@@ -44,11 +44,6 @@ public class TestBox extends BaseEntity<PolygonShape>{
 
 	@Override
 	public void tick() {
-	}
-
-	@Override
-	public void draw() {
-		
 	}
 
 	@Override

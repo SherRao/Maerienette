@@ -2,10 +2,9 @@ package tk.sherrao.maerienette;
 
 import java.util.StringJoiner;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,9 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import tk.sherrao.maerienette.screens.AbstractScreen;
 import tk.sherrao.maerienette.screens.MainScreen;
 
-public class GameApp extends Game {
+public class GameApp implements ApplicationListener {
 
 	/** General */
 	private SpriteBatch batch;
@@ -27,7 +27,8 @@ public class GameApp extends Game {
 	private OrthographicCamera camera;
 	private Viewport view;
 	private InputPoller input;
-
+	private AbstractScreen screen;
+	
 	/** Overlay */
 	private Skin skin;
 	private Label debugOverlay;
@@ -49,7 +50,7 @@ public class GameApp extends Game {
 		camera = new OrthographicCamera();
 		view = new FitViewport(1920, 1080, camera);//new StretchViewport(1920, 1080, camera);
 		input = new InputPoller(this);
-
+		
 		skin = new Skin( Gdx.files.internal("uiskin.json"), new TextureAtlas("uiskin.atlas") );
 		debugOverlay = new Label("", skin);
 		
@@ -63,7 +64,7 @@ public class GameApp extends Game {
 		camera.update();
 		view.apply();
 		
-		super.setScreen( new MainScreen(this) );
+		setScreen( new MainScreen(this) );
 		
 	}
 
@@ -72,15 +73,14 @@ public class GameApp extends Game {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		super.render();
+		screen.update();
+		screen.draw();
 		
 		updateData();
 		updateDebugOverlay();
 		
-		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			super.setScreen(null);
-			Gdx.app.exit();
-		}
+		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+			stop();
 		
 	}
 	
@@ -94,6 +94,8 @@ public class GameApp extends Game {
 		view.update(width, height);
 		view.apply();
 		
+		screen.resize(width, height);
+		
 	}
 
 	@Override
@@ -105,17 +107,30 @@ public class GameApp extends Game {
 	public void resume() {
 		
 	}
+	
+	public void setScreen (AbstractScreen newScreen) {
+		if (screen != null) 
+			screen.dispose();
+		
+		screen = newScreen;
+		if (screen != null) {
+			screen.load();
+			screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
+		}
+	}
 
 	public void stop() {
-		
-		
+		setScreen(null);
+		Gdx.app.exit();
+				
 	}
 	
-	public Screen findScreen(String name ) {
+	public AbstractScreen findScreen(String name) {
 		return null;
 		
 	}
-		
+	
 	private void updateData() {
 		delta = Gdx.graphics.getDeltaTime();
 		fps = Gdx.graphics.getFramesPerSecond();

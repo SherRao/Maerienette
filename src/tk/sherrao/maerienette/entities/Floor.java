@@ -5,18 +5,18 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import tk.sherrao.maerienette.GameApp;
 import tk.sherrao.maerienette.screens.MainScreen;
-import tk.sherrao.maerienette.world.BaseEntity;
+import tk.sherrao.maerienette.world.AbstractEntity;
 
-public class Floor extends BaseEntity<PolygonShape> {
+public class Floor extends AbstractEntity<PolygonShape> {
 
 	public Floor(GameApp game, MainScreen screen) {
 		super(game, screen);
 
 		shape = new PolygonShape();
-		shape.setAsBox(2000, 25);
+		shape.setAsBox(2000, 50);
 
 		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(0, 25);
+		bodyDef.position.set(25, 0);
 		body = world.createBody(bodyDef);
 		body.setUserData("floor");
 
@@ -32,11 +32,6 @@ public class Floor extends BaseEntity<PolygonShape> {
 
 	@Override
 	public void tick() {
-
-	}
-
-	@Override
-	public void draw() {
 
 	}
 

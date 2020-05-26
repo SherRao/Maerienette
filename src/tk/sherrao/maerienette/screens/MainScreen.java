@@ -1,12 +1,10 @@
 package tk.sherrao.maerienette.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -17,35 +15,43 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 import tk.sherrao.maerienette.GameApp;
-import tk.sherrao.maerienette.GameScreen;
 import tk.sherrao.maerienette.entities.Floor;
 import tk.sherrao.maerienette.entities.Player;
-import tk.sherrao.maerienette.entities.TestBox;
+import tk.sherrao.maerienette.rooms.AbstractRoom;
+import tk.sherrao.maerienette.rooms.IntroRoom;
 import tk.sherrao.maerienette.world.InteractableEntity;
 
-public class MainScreen extends GameScreen implements ContactListener {
+public class MainScreen extends AbstractScreen implements ContactListener {
 
 	private Box2DDebugRenderer renderer;
-	private Stage worldStage, guiStage;
+	private Stage worldStage;
+	private Stage guiStage;
 	private World world;
 	
-	private Floor floor;
+	private AbstractRoom room;
 	private Player player;
-	private TestBox box;
+	private Floor floor;
 	
-	private Sprite dialogueBackground;
+	private Image dialogueBackground;
 	private TypingLabel dialogue;
-	
 	private Music backgroundMusic;
 	
 	public MainScreen(GameApp game) {
 		super(game);
 	
+	}
+	
+	@Override
+	public void load() {
 		renderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+		renderer.AABB_COLOR.set(Color.MAGENTA);
+		renderer.VELOCITY_COLOR.set(Color.BLUE);
+		
 		worldStage = new Stage(view, batch);
 		guiStage = new Stage(view, batch);
 		world = new World( new Vector2(0f, -980f), true);
@@ -53,41 +59,31 @@ public class MainScreen extends GameScreen implements ContactListener {
 		world.setContinuousPhysics(true);
 		world.setContactListener(this);
 		
-		floor = new Floor(game, this);
-		floor.init();
-		
+		changeRoom(new IntroRoom(game, this));
 		player = new Player(game, this);
-		player.init();
-
-		box = new TestBox(game, this);
-		box.init();
+		floor = new Floor(game, this);
 		
 		dialogue = new TypingLabel("{EASE}this is a test label", new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas("uiskin.atlas")) );
 		dialogue.setColor(Color.WHITE);
-		dialogue.setBounds(400, 400, 200, 50);
+		dialogue.setPosition(50, 500);
 		
+		dialogueBackground = new Image();
+		//dialogue = new TypingLabel(text, style);
 		backgroundMusic = Gdx.audio.newMusic( Gdx.files.internal("test/musictest.mp3") );
 		backgroundMusic.setVolume(.2f);
 		backgroundMusic.play();
 		
-		guiStage.addActor(dialogue);
-		
-	}
-	
-	@Override
-	public void show() {
-		worldStage.addAction(Actions.fadeIn(1f));
-		guiStage.addAction(Actions.fadeIn(1f));
+		Gdx.graphics.setSystemCursor(SystemCursor.Crosshair);
 		
 	}
 	
 	@Override
 	public void update() {
+		if(room != null)
+			room.update();
 		player.tick();
 		floor.tick();
-		box.tick();
 		
-		camera.position.set(player.getPosition().x, camera.position.y, camera.position.z);
 		camera.update();
 		world.step(1/60f, 6, 2);
 		worldStage.act();
@@ -95,44 +91,27 @@ public class MainScreen extends GameScreen implements ContactListener {
 		
 		worldStage.setDebugAll(game.isDebug());
 		guiStage.setDebugAll(game.isDebug());
+		
 	}
 
 	@Override
-	public void draw() {
-		shape.begin(ShapeType.Filled);
-		shape.setColor(Color.DARK_GRAY);
-		shape.rect(0,0,1920,1080);
-		shape.end();
-		
-		if(game.isDebug()) 
-			renderer.render(world, view.getCamera().combined);
-
+	public void draw() {	
 		worldStage.draw();
 		guiStage.draw();
+
+		if(game.isDebug()) 
+			renderer.render(world, view.getCamera().combined);
 		
-		shape.setProjectionMatrix(camera.combined);
-		shape.begin(ShapeType.Filled);
-		shape.setColor(Color.RED);
-		shape.circle(Gdx.input.getX(), -Gdx.input.getY(), 20);
-		shape.end();
 	}
 	
 	@Override
-	public void hide() {
-		worldStage.addAction(Actions.fadeOut(1f));
-		guiStage.addAction(Actions.fadeOut(1f));
-		
-	}
-
-	@Override
-	public void end() {
+	public void dispose() {
 		renderer.dispose();
 		worldStage.dispose();
 		guiStage.dispose();
 		world.dispose();
 		player.destroy();
 		floor.destroy();
-		box.destroy();
 		
 	}
 	
@@ -177,6 +156,20 @@ public class MainScreen extends GameScreen implements ContactListener {
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
 	}
+	
+	public void changeRoom(AbstractRoom newRoom) {
+		if(room != null) {
+			worldStage.addAction( Actions.fadeOut(.5f) );
+			room.clear();
+		
+		}
+		
+		this.room = newRoom;
+		room.load();
+		worldStage.addAction( Actions.fadeIn(.5f) );
+		
+	}
+	
 	
 	public Stage getWorldStage() {
 		return this.worldStage;

@@ -1,4 +1,4 @@
-package tk.sherrao.maerienette;
+package tk.sherrao.maerienette.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
@@ -8,7 +8,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public abstract class GameScreen extends GameComponent implements Screen {
+import tk.sherrao.maerienette.GameApp;
+import tk.sherrao.maerienette.GameComponent;
+import tk.sherrao.maerienette.InputPoller;
+
+public abstract class AbstractScreen extends GameComponent implements Screen {
 
 	/** General */
 	protected final InputPoller input;
@@ -17,7 +21,7 @@ public abstract class GameScreen extends GameComponent implements Screen {
 	protected final OrthographicCamera camera;
 	protected final Viewport view;
 
-	public GameScreen(final GameApp game) {
+	public AbstractScreen(final GameApp game) {
 		super(game);
 		
 		this.input = game.getInputPoller();
@@ -30,17 +34,20 @@ public abstract class GameScreen extends GameComponent implements Screen {
 		
 	}
 	
-	public abstract void show();
+	public abstract void load();
 
 	public abstract void update();
 	
 	public abstract void draw();
 	
-	public abstract void hide();
+	public abstract void dispose();
 	
-	public abstract void end();
+	@Override
+	public final void show() {}
 	
-
+	@Override
+	public final void hide() {}
+	
 	@Override
 	public final void render(float delta) {
 		update();
@@ -48,12 +55,6 @@ public abstract class GameScreen extends GameComponent implements Screen {
 		
 	}
 
-	@Override
-	public void dispose() {
-		this.end();
-		
-	}
-	
 	@Override
 	public void resize(int width, int height) {
 		view.update(width, height);

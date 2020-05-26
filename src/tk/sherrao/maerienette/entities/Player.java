@@ -2,8 +2,10 @@ package tk.sherrao.maerienette.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,15 +14,16 @@ import net.dermetfan.gdx.graphics.g2d.AnimatedSprite;
 import tk.sherrao.maerienette.GameApp;
 import tk.sherrao.maerienette.InputPoller;
 import tk.sherrao.maerienette.screens.MainScreen;
-import tk.sherrao.maerienette.world.BaseEntity;
+import tk.sherrao.maerienette.world.AbstractEntity;
 import tk.sherrao.maerienette.world.InteractableEntity;
 
-public class Player extends BaseEntity<PolygonShape> implements InputProcessor {
+public class Player extends AbstractEntity<PolygonShape> implements InputProcessor {
 
 	enum PlayerState { WALKING, TALKING, IDLE }
 	
 	private InputPoller input;
 	
+	private Image image;
 	private AnimatedSprite sprite;
 	private Animation runningAnimation;
 	private Animation idleAnimation;
@@ -32,13 +35,18 @@ public class Player extends BaseEntity<PolygonShape> implements InputProcessor {
 		super(game, screen);
 		
 		input = game.getInputPoller();
+		image = new Image( new Texture(Gdx.files.internal("textures/global/player/player.png")));
+		image.setScale(.35f); //269.85 x 473.2
+		
+		super.setSize(269.85f, 473.2f);
 		
 		shape = new PolygonShape();
-		shape.setAsBox(183/2, 333/2);
+		shape.setAsBox(super.getWidth()/2, super.getHeight()/2);
 
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(300, 216);
+		bodyDef.position.set(300, 700);
 		body = world.createBody(bodyDef);
+		body.setLinearDamping(0f);
 		body.setUserData("player");
 		
 		fixtureDef.shape = shape;
@@ -50,23 +58,26 @@ public class Player extends BaseEntity<PolygonShape> implements InputProcessor {
 		shape.dispose();
 		
 		screen.getWorldStage().addActor(image);
+		input.addInputSource(this);
+		
 	}
 
 	
 	@Override
 	public void tick() {
-		if(input.keyPress("left"))
-			body.setLinearVelocity(-500f, 0f);
+		if(Gdx.input.isKeyPressed(Keys.A))
+			body.setLinearVelocity(-10000f, body.getLinearVelocity().y);
 		
-		if(input.keyPress("right"))
-			body.setLinearVelocity(500f, 0f);
+		else if(Gdx.input.isKeyPressed(Keys.D))
+			body.setLinearVelocity(10000f, body.getLinearVelocity().y);
 		
+		else
+			body.setLinearVelocity(0, body.getLinearVelocity().y);
+			
+		image.setPosition(body.getPosition().x - (super.getWidth() / 2), body.getPosition().y - (super.getHeight() / 2));
+
 	}
 
-	@Override
-	public void draw() {
-			
-	}
 
 	@Override
 	public void destroy() {
@@ -75,23 +86,14 @@ public class Player extends BaseEntity<PolygonShape> implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if(input.isLeftKey(keycode)) {
-			body.setLinearVelocity(-30, 0);
-			
-		} else if(input.isRightKey(keycode)) {
-			body.setLinearVelocity(30, 0);
-	
-	 	} else {
-			body.setLinearVelocity(0, 0);
-	 	}
-	 	
 		return true;
 			
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		return false;
+		return true;
+		
 	}
 
 	@Override

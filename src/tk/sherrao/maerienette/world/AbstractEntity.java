@@ -13,7 +13,7 @@ import tk.sherrao.maerienette.GameApp;
 import tk.sherrao.maerienette.GameComponent;
 import tk.sherrao.maerienette.screens.MainScreen;
 
-public abstract class BaseEntity<T extends Shape> extends GameComponent {
+public abstract class AbstractEntity<T extends Shape> extends GameComponent {
 
 	protected final MainScreen screen;
 	protected final World world;
@@ -22,14 +22,14 @@ public abstract class BaseEntity<T extends Shape> extends GameComponent {
 	protected final BodyDef bodyDef;
 	protected final FixtureDef fixtureDef;
 
-	protected int width;
-	protected int height;
+	protected float width;
+	protected float height;
 	
 	protected T shape;
 	protected Body body;
 	protected Fixture fixture;
 	
-	public BaseEntity(final GameApp game, MainScreen screen) {
+	public AbstractEntity(final GameApp game, MainScreen screen) {
 		super(game);
 	
 		this.screen = screen;
@@ -43,9 +43,13 @@ public abstract class BaseEntity<T extends Shape> extends GameComponent {
 	
 	public abstract void tick();
 	
-	public abstract void draw();
-	
 	public abstract void destroy();
+	
+	protected final void setSize(float width, float height) {
+		this.width = width;
+		this.height = height;
+		
+	}
 	
 	public final Body getBody() {
 		return this.body;
@@ -67,12 +71,12 @@ public abstract class BaseEntity<T extends Shape> extends GameComponent {
 		
 	}
 	
-	public final int getWidth() {
+	public final float getWidth() {
 		return this.width;
 		
 	}
 	
-	public final int getHeight() {
+	public final float getHeight() {
 		return this.height;
 		
 	}

@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import tk.sherrao.maerienette.GameApp;
 import tk.sherrao.maerienette.screens.MainScreen;
 
-public abstract class InteractableEntity extends BaseEntity<PolygonShape> {
+public abstract class InteractableEntity extends AbstractEntity<PolygonShape> {
 
 	protected int detectionWidth;
 	

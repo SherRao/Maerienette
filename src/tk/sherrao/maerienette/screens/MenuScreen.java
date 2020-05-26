@@ -11,9 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 import tk.sherrao.maerienette.GameApp;
-import tk.sherrao.maerienette.GameScreen;
 
-public class MenuScreen extends GameScreen {
+public class MenuScreen extends AbstractScreen {
 
 	private Stage stage;
 	private Skin skin;
@@ -28,17 +27,20 @@ public class MenuScreen extends GameScreen {
 	
 	public MenuScreen(final GameApp game) {
 		super(game);
+	}
+	
+	@Override
+	public void load() {
+		stage = new Stage(view, batch);
+		skin = new Skin( Gdx.files.internal("skins/menu/skin.json") );
 		
-		this.stage = new Stage(view, batch);
-		this.skin = new Skin( Gdx.files.internal("skins/menu/skin.json") );
+		play = new ImageButton(skin.getDrawable(null), skin.getDrawable(null), skin.getDrawable(null));
+		credits = new ImageButton(skin.getDrawable(null), skin.getDrawable(null), skin.getDrawable(null));
+		quit = new ImageButton(skin.getDrawable(null), skin.getDrawable(null), skin.getDrawable(null));
+		copyright = new TypingLabel("AEARENUS 2020", skin);
 		
-		this.play = new ImageButton(skin.getDrawable(null), skin.getDrawable(null), skin.getDrawable(null));
-		this.credits = new ImageButton(skin.getDrawable(null), skin.getDrawable(null), skin.getDrawable(null));
-		this.quit = new ImageButton(skin.getDrawable(null), skin.getDrawable(null), skin.getDrawable(null));
-		this.copyright = new TypingLabel("AEARENUS 2020", skin);
-		
-		this.soundVolume = new Slider(0f, 100f, 1f, false, skin);
-		this.musicVolume = new Slider(0f, 100f, 1f, false, skin);
+		soundVolume = new Slider(0f, 100f, 1f, false, skin);
+		musicVolume = new Slider(0f, 100f, 1f, false, skin);
 		
 		stage.addActor(play);
 		stage.addActor(credits);
@@ -52,11 +54,6 @@ public class MenuScreen extends GameScreen {
 		
 	}
 
-	@Override
-	public void show() {
-		stage.addAction(Actions.fadeIn(1f));
-		
-	}
 
 	@Override
 	public void update() {
@@ -72,13 +69,7 @@ public class MenuScreen extends GameScreen {
 	}
 
 	@Override
-	public void hide() {
-		stage.addAction(Actions.fadeOut(1f));
-
-	}
-
-	@Override
-	public void end() {
+	public void dispose() {
 		stage.dispose();
 		skin.dispose();
 		
