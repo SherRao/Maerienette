@@ -1,11 +1,9 @@
-package tk.sherrao.maerienette.world;
+package me.sherrao.maerienette.entities;
 
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import me.sherrao.maerienette.GameApp;
+import me.sherrao.maerienette.screens.MainScreen;
 
-import tk.sherrao.maerienette.GameApp;
-import tk.sherrao.maerienette.screens.MainScreen;
-
-public abstract class InteractableEntity extends AbstractEntity<PolygonShape> {
+public abstract class InteractableEntity extends Entity {
 
 	protected int detectionWidth;
 	

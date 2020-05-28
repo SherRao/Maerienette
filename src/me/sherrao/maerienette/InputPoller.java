@@ -1,4 +1,4 @@
-package tk.sherrao.maerienette;
+package me.sherrao.maerienette;
 
 import static com.badlogic.gdx.Gdx.input;
 

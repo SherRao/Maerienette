@@ -1,4 +1,4 @@
-package tk.sherrao.maerienette.screens;
+package me.sherrao.maerienette.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
@@ -8,13 +8,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import tk.sherrao.maerienette.GameApp;
-import tk.sherrao.maerienette.GameComponent;
-import tk.sherrao.maerienette.InputPoller;
+import me.sherrao.maerienette.GameApp;
+import me.sherrao.maerienette.GameComponent;
+import me.sherrao.maerienette.InputPoller;
 
+/**
+ * Represents a screen within the game
+ * Controlled by {@link GameApp}
+ * 
+ * @author Nausher Rao
+ *
+ */
 public abstract class AbstractScreen extends GameComponent implements Screen {
 
-	/** General */
 	protected final InputPoller input;
 	protected final SpriteBatch batch;
 	protected final ShapeRenderer shape;
@@ -34,20 +40,34 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 		
 	}
 	
+	/** 
+	 * 
+	 * Initialization of all resources required by the Screen.
+	 * 
+	 */
 	public abstract void load();
 
+	/**
+	 * 
+	 * Called each frame of the game to update the logic of the Screen.
+	 * 
+	 */
 	public abstract void update();
 	
+	/**
+	 * 
+	 * Called each frame of the game to draw any assets of the Screen.
+	 * 
+	 */
 	public abstract void draw();
 	
+	/**
+	 * 
+	 * Called when switching screens to release all resources used by this Screen.
+	 * 
+	 */
 	public abstract void dispose();
-	
-	@Override
-	public final void show() {}
-	
-	@Override
-	public final void hide() {}
-	
+
 	@Override
 	public final void render(float delta) {
 		update();
@@ -62,11 +82,37 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 		
 	}
 
+	/**
+	 * 
+	 * Unused
+	 * 
+	 */
 	@Override
-	public void pause() {}
+	public final void show() {}
+	
+	/**
+	 * 
+	 * Unused
+	 * 
+	 */
+	@Override
+	public final void hide() {}
+	
+	/**
+	 * 
+	 * Unused
+	 * 
+	 */
+	@Override
+	public final void pause() {}
 
+	/**
+	 * 
+	 * Unused
+	 * 
+	 */
 	@Override
-	public void resume() {}
+	public final void resume() {}
 	
 	public final SpriteBatch getBatch() {
 		return this.batch;

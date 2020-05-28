@@ -1,4 +1,4 @@
-package tk.sherrao.maerienette.screens;
+package me.sherrao.maerienette.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
-import tk.sherrao.maerienette.GameApp;
+import me.sherrao.maerienette.GameApp;
 
 public class MenuScreen extends AbstractScreen {
 

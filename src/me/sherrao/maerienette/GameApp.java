@@ -1,4 +1,4 @@
-package tk.sherrao.maerienette;
+package me.sherrao.maerienette;
 
 import java.util.StringJoiner;
 
@@ -10,14 +10,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import tk.sherrao.maerienette.screens.AbstractScreen;
-import tk.sherrao.maerienette.screens.MainScreen;
+import me.sherrao.maerienette.screens.AbstractScreen;
+import me.sherrao.maerienette.screens.MainScreen;
 
 public class GameApp implements ApplicationListener {
 
@@ -34,6 +35,8 @@ public class GameApp implements ApplicationListener {
 	private Label debugOverlay;
 	
 	/** Data */
+	private float mx;
+	private float my;
 	private boolean paused;
 	private boolean debug;
 	private float delta;
@@ -132,6 +135,9 @@ public class GameApp implements ApplicationListener {
 	}
 	
 	private void updateData() {
+		Vector3 mp = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		mx = mp.x;
+		my = mp.y;
 		delta = Gdx.graphics.getDeltaTime();
 		fps = Gdx.graphics.getFramesPerSecond();
 		javaMem = Gdx.app.getJavaHeap() / 1000;
@@ -158,7 +164,7 @@ public class GameApp implements ApplicationListener {
 					.add("Render Calls/Frame: " + batch.renderCalls)
 					.add("Total Render Calls: " + batch.totalRenderCalls)
 					.add("")
-					.add( String.format("Mouse (x,y): (%d,%d)", Gdx.input.getX(), Gdx.input.getY()) )
+					.add( String.format("Mouse (x,y): (%.2f,%.2f)", mx, my) )
 					.toString() );
 			
 			batch.begin();
@@ -190,6 +196,16 @@ public class GameApp implements ApplicationListener {
 	
 	public InputPoller getInputPoller() {
 		return this.input;
+		
+	}
+	
+	public float getMouseX() {
+		return this.mx;
+		
+	}
+	
+	public float getMouseY() {
+		return this.my;
 		
 	}
 	
