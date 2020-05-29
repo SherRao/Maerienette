@@ -79,7 +79,7 @@ public class MenuScreen extends AbstractScreen {
 		play.addListener( new ClickListener() {
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
-				game.setScreen( game.findScreen("game") );
+				game.changeScreen( game.findScreen("game") );
 				
 			}
 		} );
@@ -87,7 +87,7 @@ public class MenuScreen extends AbstractScreen {
 		credits.addListener( new ClickListener() {
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
-				game.setScreen( game.findScreen("credits") );
+				game.changeScreen( game.findScreen("credits") );
 				
 			}
 		} );

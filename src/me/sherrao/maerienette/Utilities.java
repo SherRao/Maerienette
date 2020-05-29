@@ -1,17 +1,21 @@
 package me.sherrao.maerienette;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
-import me.sherrao.maerienette.entities.Entity;
-import me.sherrao.maerienette.screens.MainScreen;
-
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
+
+import me.sherrao.maerienette.entities.Entity;
+import me.sherrao.maerienette.screens.MainScreen;
 
 public abstract class Utilities {
 
@@ -94,6 +98,19 @@ public abstract class Utilities {
 			
 		shape.dispose();
 		return fixture;	
+		
+	}
+	
+	public static void screenshot() {
+		byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
+		for (int i = 4; i < pixels.length; i += 4) {
+		    pixels[i - 1] = (byte) 255;
+		}
+
+		Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+		BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
+		PixmapIO.writePNG(Gdx.files.external("screenshot-" + System.currentTimeMillis() + ".png"), pixmap);
+		pixmap.dispose();
 		
 	}
 	

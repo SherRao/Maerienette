@@ -15,6 +15,8 @@ import me.sherrao.maerienette.screens.MainScreen;
 public abstract class Room extends GameComponent {
 
 	protected final MainScreen screen;
+	protected Room nextRoom;
+	protected float nextX;
 	
 	public Room(final GameApp game, MainScreen screen) {
 		super(game);
@@ -25,10 +27,14 @@ public abstract class Room extends GameComponent {
 	
 	public abstract void load();
 	
-	public abstract void update();
-	
 	public abstract void clear();
 	
 	public abstract void wallCollision(Entity wall);
+	
+	public void update() {
+		if(nextRoom != null)
+			screen.changeRoom(nextRoom, nextX);
+		
+	}
 	
 }

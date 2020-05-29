@@ -20,7 +20,7 @@ public class TestRoom2 extends Room {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
+		super.update();
 
 	}
 
@@ -32,8 +32,10 @@ public class TestRoom2 extends Room {
 
 	@Override
 	public void wallCollision(Entity wall) {
-		if (wall instanceof LeftWall) 
-			screen.changeRoom( new IntroRoom(game, screen));
+		if (wall instanceof LeftWall) {
+			nextX = screen.getWorldWidth() - 250f;
+			nextRoom = new IntroRoom(game, screen);
+		}
 	}
 
 }

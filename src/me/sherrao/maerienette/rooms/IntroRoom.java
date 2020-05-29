@@ -27,7 +27,9 @@ public class IntroRoom extends Room {
 		background = new Image( new Texture( files.internal("textures/rooms/introroom/background.jpg")) );
 		background.setFillParent(true);
 		background.setUserObject(this);
-		background.setZIndex(2);
+		
+		leftRoom = new TestRoom(game, screen);
+		rightRoom = new TestRoom2(game, screen);
 		
 		screen.getWorldStage().addActor(background);
 		
@@ -35,6 +37,7 @@ public class IntroRoom extends Room {
 
 	@Override
 	public void update() {
+		super.update();
 		
 	}
 
@@ -45,12 +48,14 @@ public class IntroRoom extends Room {
 	
 	@Override
 	public void wallCollision(Entity wall) {
-		if(wall instanceof LeftWall)
-			screen.changeRoom( new TestRoom(game, screen));
+		if(wall instanceof LeftWall) {
+			nextX = screen.getWorldWidth() - 250f;
+			nextRoom = leftRoom;
 			
-		else if (wall instanceof RightWall) 
-			screen.changeRoom( new TestRoom2(game, screen));
-
+		} else if (wall instanceof RightWall) {
+			nextX = 250f;
+			nextRoom = rightRoom;
+		}
 	}
 	
 	

@@ -28,6 +28,7 @@ public class GameApp implements ApplicationListener {
 	private OrthographicCamera camera;
 	private Viewport view;
 	private InputPoller input;
+	private Assets assets;
 	private AbstractScreen screen;
 	
 	/** Overlay */
@@ -53,7 +54,7 @@ public class GameApp implements ApplicationListener {
 		camera = new OrthographicCamera();
 		view = new FitViewport(1920, 1080, camera);//new StretchViewport(1920, 1080, camera);
 		input = new InputPoller(this);
-		
+		assets = new Assets(this);
 		skin = new Skin( Gdx.files.internal("uiskin.json"), new TextureAtlas("uiskin.atlas") );
 		debugOverlay = new Label("", skin);
 		
@@ -67,7 +68,7 @@ public class GameApp implements ApplicationListener {
 		camera.update();
 		view.apply();
 		
-		setScreen( new MainScreen(this) );
+		changeScreen( new MainScreen(this) );
 		
 	}
 
@@ -81,6 +82,9 @@ public class GameApp implements ApplicationListener {
 		
 		updateData();
 		updateDebugOverlay();
+
+		if(Gdx.input.isKeyJustPressed(Keys.P))
+			Utilities.screenshot();
 		
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			stop();
@@ -89,7 +93,12 @@ public class GameApp implements ApplicationListener {
 	
 	@Override
 	public void dispose() {
-		
+		changeScreen(null);
+		batch.dispose();
+		shape.dispose();
+
+		skin.dispose();
+	
 	}
 
 	@Override
@@ -111,8 +120,8 @@ public class GameApp implements ApplicationListener {
 		
 	}
 	
-	public void setScreen (AbstractScreen newScreen) {
-		if (screen != null) 
+	public void changeScreen(AbstractScreen newScreen) {
+		if(screen != null)
 			screen.dispose();
 		
 		screen = newScreen;
@@ -124,7 +133,7 @@ public class GameApp implements ApplicationListener {
 	}
 
 	public void stop() {
-		setScreen(null);
+		changeScreen(null);
 		Gdx.app.exit();
 				
 	}
@@ -196,6 +205,11 @@ public class GameApp implements ApplicationListener {
 	
 	public InputPoller getInputPoller() {
 		return this.input;
+		
+	}
+	
+	public Assets getAssetManager() {
+		return this.assets;
 		
 	}
 	
