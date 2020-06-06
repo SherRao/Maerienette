@@ -1,4 +1,4 @@
-package me.sherrao.maerienette.entities;
+package tech.sherrao.maerienette.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-import me.sherrao.maerienette.GameApp;
-import me.sherrao.maerienette.InputPoller;
-import me.sherrao.maerienette.Utilities;
-import me.sherrao.maerienette.screens.MainScreen;
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite;
+import tech.sherrao.maerienette.GameApp;
+import tech.sherrao.maerienette.InputPoller;
+import tech.sherrao.maerienette.screens.MainScreen;
+import tech.sherrao.maerienette.utils.Utilities;
 
 public class Player extends Entity implements InputProcessor {
 
@@ -53,14 +53,14 @@ public class Player extends Entity implements InputProcessor {
 
 	@Override
 	public void tick() {
-		if (focus) {
+		if(focus) {
 			super.tick();
-			if (Gdx.input.isKeyPressed(Keys.A)) {
+			if(Gdx.input.isKeyPressed(Keys.A)) {
 				state = PlayerState.WALKING;
 				Utilities.applyLinearImpulse(this, -.2f, 0f);
 				lastMoveTime = System.currentTimeMillis();
 
-			} else if (Gdx.input.isKeyPressed(Keys.D)) {
+			} else if(Gdx.input.isKeyPressed(Keys.D)) {
 				state = PlayerState.WALKING;
 				Utilities.applyLinearImpulse(this, .2f, 0f);
 				lastMoveTime = System.currentTimeMillis();
@@ -68,7 +68,7 @@ public class Player extends Entity implements InputProcessor {
 			}
 
 			long idleTime = lastMoveTime + 0;// Utilities.randLong(-idleTimeWaitThreshold, idleTimeWaitThreshold);
-			if (idleTime >= idleTimeWait) {
+			if(idleTime >= idleTimeWait) {
 				// TODO: Make idle animation active for a bit
 
 			}
@@ -93,7 +93,7 @@ public class Player extends Entity implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if (game.getInputPoller().isLeftKey(keycode) || game.getInputPoller().isRightKey(keycode)) {
+		if(game.getInputPoller().isLeftKey(keycode) || game.getInputPoller().isRightKey(keycode)) {
 			state = PlayerState.IDLE;
 			body.setLinearVelocity(0, 0);
 

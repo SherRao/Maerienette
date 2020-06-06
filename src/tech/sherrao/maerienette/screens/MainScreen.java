@@ -1,4 +1,4 @@
-package me.sherrao.maerienette.screens;
+package tech.sherrao.maerienette.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -20,17 +20,17 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
-import me.sherrao.maerienette.GameApp;
-import me.sherrao.maerienette.entities.Entity;
-import me.sherrao.maerienette.entities.Floor;
-import me.sherrao.maerienette.entities.LeftWall;
-import me.sherrao.maerienette.entities.Player;
-import me.sherrao.maerienette.entities.RightWall;
-import me.sherrao.maerienette.rooms.IntroRoom;
-import me.sherrao.maerienette.rooms.Room;
+import tech.sherrao.maerienette.GameApp;
+import tech.sherrao.maerienette.entities.Entity;
+import tech.sherrao.maerienette.entities.Floor;
+import tech.sherrao.maerienette.entities.LeftWall;
+import tech.sherrao.maerienette.entities.Player;
+import tech.sherrao.maerienette.entities.RightWall;
+import tech.sherrao.maerienette.rooms.IntroRoom;
+import tech.sherrao.maerienette.rooms.Room;
 
 public class MainScreen extends AbstractScreen implements ContactListener {
 
@@ -43,6 +43,8 @@ public class MainScreen extends AbstractScreen implements ContactListener {
 	private World world;
 
 	private Room room;
+	private ObjectMap<String, Room> rooms;
+	
 	private Player player;
 	private Floor floor;
 	private LeftWall leftWall;
@@ -54,9 +56,7 @@ public class MainScreen extends AbstractScreen implements ContactListener {
 
 	public MainScreen(final GameApp game) {
 		super(game);
-		
-		
-		
+
 	}
 
 	@Override
@@ -90,8 +90,9 @@ public class MainScreen extends AbstractScreen implements ContactListener {
 
 		dialogueBackground = new Image();
 		// dialogue = new TypingLabel(text, style);
-		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("test/musictest.mp3"));
-		backgroundMusic.setVolume(.2f);
+		// backgroundMusic =
+		// Gdx.audio.newMusic(Gdx.files.internal("test/musictest.mp3"));
+		// backgroundMusic.setVolume(.2f);
 		// backgroundMusic.play();
 
 		Gdx.graphics.setSystemCursor(SystemCursor.Crosshair);
@@ -102,7 +103,7 @@ public class MainScreen extends AbstractScreen implements ContactListener {
 	@Override
 	public void update() {
 		world.step(1 / 60f, 6, 2);
-		
+
 		worldStage.act();
 		guiStage.act();
 
@@ -111,7 +112,7 @@ public class MainScreen extends AbstractScreen implements ContactListener {
 		leftWall.tick();
 		rightWall.tick();
 
-		if (room != null)
+		if(room != null)
 			room.update();
 
 		worldStage.setDebugAll(game.isDebug());
@@ -128,7 +129,7 @@ public class MainScreen extends AbstractScreen implements ContactListener {
 		leftWall.draw();
 		rightWall.draw();
 
-		if (game.isDebug())
+		if(game.isDebug())
 			renderer.render(world, view.getCamera().combined.cpy().scale(PPM, PPM, 1));
 	}
 
@@ -160,30 +161,31 @@ public class MainScreen extends AbstractScreen implements ContactListener {
 	public void postSolve(Contact contact, ContactImpulse impulse) {
 		Fixture a = contact.getFixtureA();
 		Fixture b = contact.getFixtureB();
-		if (a.getUserData() instanceof Player && b.getUserData() instanceof LeftWall) {
+		if(a.getUserData() instanceof Player && b.getUserData() instanceof LeftWall) {
 			room.wallCollision((Entity) b.getUserData());
 
-		} else if (b.getUserData() instanceof Player && a.getUserData() instanceof LeftWall) {
+		} else if(b.getUserData() instanceof Player && a.getUserData() instanceof LeftWall) {
 			room.wallCollision((Entity) a.getUserData());
 
-		} else if (a.getUserData() instanceof Player && b.getUserData() instanceof RightWall) {
+		} else if(a.getUserData() instanceof Player && b.getUserData() instanceof RightWall) {
 			room.wallCollision((Entity) b.getUserData());
 
-		} else if (b.getUserData() instanceof Player && a.getUserData() instanceof RightWall) {
+		} else if(b.getUserData() instanceof Player && a.getUserData() instanceof RightWall) {
 			room.wallCollision((Entity) a.getUserData());
 
 		}
 	}
-	
+
 	public void interjectDialogue() {
 		player.setFocus(false);
 		dialogue.setVisible(true);
 		dialogueBackground.setVisible(true);
-		
+
 	}
 
-	public void changeRoom(Room newRoom, float nx) {
-		if (room != null) {
+	public void changeRoom(String newRoomName, float nx) {
+		Room nextRoom = rooms.get(newRoomName);
+		if(room != null) {	
 			worldStage.addAction(Actions.fadeOut(2f));
 			room.clear();
 
@@ -193,25 +195,25 @@ public class MainScreen extends AbstractScreen implements ContactListener {
 		Array<Body> bodies = new Array<>();
 		world.clearForces();
 		world.getBodies(bodies);
-		for (Body body : bodies)
-			if (!(body.getUserData() instanceof Player) && !(body.getUserData() instanceof Floor)
+		for(Body body : bodies)
+			if(!(body.getUserData() instanceof Player) && !(body.getUserData() instanceof Floor)
 					&& !(body.getUserData() instanceof LeftWall) && !(body.getUserData() instanceof RightWall))
 				world.destroyBody(body);
 
 		// Clears actors from the stage.
-		for (Actor actor : worldStage.getActors())
-			if (!(actor.getUserObject() instanceof Player) && !(actor.getUserObject() instanceof Floor)
+		for(Actor actor : worldStage.getActors())
+			if(!(actor.getUserObject() instanceof Player) && !(actor.getUserObject() instanceof Floor)
 					&& !(actor.getUserObject() instanceof LeftWall) && !(actor.getUserObject() instanceof RightWall))
 				actor.remove();
 
-		this.room = newRoom;
-		if (room != null) {
+		this.room = nextRoom;
+		if(room != null) {
 			room.load();
 			worldStage.addAction(Actions.fadeIn(2f));
+			player.getBody().setTransform(nx / PPM, player.getPhysicsPosition().y, 0f);
+			player.getImage().setZIndex(worldStage.getActors().size - 1);
+		
 		}
-
-		player.getBody().setTransform(nx / PPM, player.getPhysicsPosition().y, 0f);
-		player.getImage().setZIndex(worldStage.getActors().size - 1);
 
 	}
 

@@ -1,9 +1,9 @@
-package me.sherrao.maerienette.rooms;
+package tech.sherrao.maerienette.rooms;
 
-import me.sherrao.maerienette.GameApp;
-import me.sherrao.maerienette.entities.Entity;
-import me.sherrao.maerienette.entities.LeftWall;
-import me.sherrao.maerienette.screens.MainScreen;
+import tech.sherrao.maerienette.GameApp;
+import tech.sherrao.maerienette.entities.Entity;
+import tech.sherrao.maerienette.entities.LeftWall;
+import tech.sherrao.maerienette.screens.MainScreen;
 
 public class TestRoom2 extends Room {
 
@@ -32,7 +32,7 @@ public class TestRoom2 extends Room {
 
 	@Override
 	public void wallCollision(Entity wall) {
-		if (wall instanceof LeftWall) {
+		if(wall instanceof LeftWall) {
 			nextX = screen.getWorldWidth() - 250f;
 			nextRoom = new IntroRoom(game, screen);
 		}

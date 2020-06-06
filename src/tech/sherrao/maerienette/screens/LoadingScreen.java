@@ -1,4 +1,4 @@
-package me.sherrao.maerienette.screens;
+package tech.sherrao.maerienette.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -7,20 +7,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 
-import me.sherrao.maerienette.Assets;
-import me.sherrao.maerienette.GameApp;
+import tech.sherrao.maerienette.Assets;
+import tech.sherrao.maerienette.GameApp;
 
 public class LoadingScreen extends AbstractScreen {
-	
+
 	private Assets assets;
 	private Stage stage;
 	private Skin skin;
 	private Label status;
 	private Label currentlyLoading;
-	
+
 	public LoadingScreen(final GameApp game) {
 		super(game);
-		
+
 	}
 
 	@Override
@@ -35,32 +35,32 @@ public class LoadingScreen extends AbstractScreen {
 
 		stage.addActor(status);
 		stage.addActor(currentlyLoading);
-		
+
 	}
 
 	@Override
 	public void update() {
 		if(assets.update() < 100) {
-			status.setText( assets.getRemaining() + "/" + assets.getTotal()  );
-			currentlyLoading.setText( assets.getCurrent() );
+			status.setText(assets.getRemaining() + "/" + assets.getTotal());
+			currentlyLoading.setText(assets.getCurrent());
 			stage.act();
-	
+
 		} else
-			game.changeScreen( new MainScreen(game) );
-		
+			game.changeScreen(new MainScreen(game));
+
 	}
 
 	@Override
 	public void draw() {
 		stage.draw();
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		stage.dispose();
 		skin.dispose();
-		
+
 	}
 
 }

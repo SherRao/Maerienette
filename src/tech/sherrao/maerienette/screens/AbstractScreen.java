@@ -1,4 +1,4 @@
-package me.sherrao.maerienette.screens;
+package tech.sherrao.maerienette.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
@@ -8,13 +8,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import me.sherrao.maerienette.GameApp;
-import me.sherrao.maerienette.GameComponent;
-import me.sherrao.maerienette.InputPoller;
+import tech.sherrao.maerienette.GameApp;
+import tech.sherrao.maerienette.GameComponent;
+import tech.sherrao.maerienette.InputPoller;
 
 /**
- * Represents a screen within the game
- * Controlled by {@link GameApp}
+ * Represents a screen within the game Controlled by {@link GameApp}
  * 
  * @author Nausher Rao
  *
@@ -29,18 +28,18 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 
 	public AbstractScreen(final GameApp game) {
 		super(game);
-		
+
 		this.input = game.getInputPoller();
 		this.batch = game.getBatch();
 		this.shape = game.getShapeBatch();
 		this.camera = game.getCamera();
 		this.view = game.getView();
-		
+
 		view.apply(true);
-		
+
 	}
-	
-	/** 
+
+	/**
 	 * 
 	 * Initialization of all resources required by the Screen.
 	 * 
@@ -53,14 +52,14 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	 * 
 	 */
 	public abstract void update();
-	
+
 	/**
 	 * 
 	 * Called each frame of the game to draw any assets of the Screen.
 	 * 
 	 */
 	public abstract void draw();
-	
+
 	/**
 	 * 
 	 * Called when switching screens to release all resources used by this Screen.
@@ -72,14 +71,14 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	public final void render(float delta) {
 		update();
 		draw();
-		
+
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		view.update(width, height);
 		view.apply();
-		
+
 	}
 
 	/**
@@ -88,23 +87,8 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	 * 
 	 */
 	@Override
-	public final void show() {}
-	
-	/**
-	 * 
-	 * Unused
-	 * 
-	 */
-	@Override
-	public final void hide() {}
-	
-	/**
-	 * 
-	 * Unused
-	 * 
-	 */
-	@Override
-	public final void pause() {}
+	public final void show() {
+	}
 
 	/**
 	 * 
@@ -112,21 +96,40 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	 * 
 	 */
 	@Override
-	public final void resume() {}
-	
+	public final void hide() {
+	}
+
+	/**
+	 * 
+	 * Unused
+	 * 
+	 */
+	@Override
+	public final void pause() {
+	}
+
+	/**
+	 * 
+	 * Unused
+	 * 
+	 */
+	@Override
+	public final void resume() {
+	}
+
 	public final SpriteBatch getBatch() {
 		return this.batch;
-		
+
 	}
-	
+
 	public final Camera getCamera() {
 		return this.camera;
-		
+
 	}
-	
+
 	public final Viewport getView() {
 		return this.view;
-		
+
 	}
 
 }
