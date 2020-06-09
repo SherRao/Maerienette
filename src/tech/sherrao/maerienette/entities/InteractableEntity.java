@@ -11,8 +11,8 @@ public abstract class InteractableEntity extends Entity {
 	protected boolean alreadyInteractedWith;
 	protected boolean playerInRadius;
 
-	public InteractableEntity(final GameApp game, MainScreen screen, float x, float y, float width, float height) {
-		super(game, screen, x, y, width, height);
+	public InteractableEntity(GameApp game, MainScreen screen, float x, float y, float width, float height, boolean isEssential) {
+		super(game, screen, x, y, width, height, isEssential);
 
 	}
 

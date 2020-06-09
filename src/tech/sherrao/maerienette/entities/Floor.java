@@ -18,8 +18,8 @@ public class Floor extends Entity {
 	private Color color;
 
 	public Floor(GameApp game, MainScreen screen) {
-		super(game, screen, 0f, 0f, screen.getView().getWorldWidth(), 50f);
-		super.fixture = Utilities.createPhysicsEntity(this, BodyType.StaticBody, 10f, 0f, 20f, this);
+		super(game, screen, 0f, 0f, screen.getView().getWorldWidth(), 50f, true);
+		super.fixture = Utilities.createPhysicsEntity(this, BodyType.StaticBody, true, 10f, 0f, 20f);
 		super.body = fixture.getBody();
 
 		this.shape = game.getShapeBatch();

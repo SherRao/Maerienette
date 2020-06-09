@@ -26,30 +26,28 @@ public class Player extends Entity implements InputProcessor {
 	private long idleTimeWait;
 	private long idleTimeWaitThreshold;
 
-	private Image image;
+	private float maxSpeed;
 	private AnimatedSprite sprite;
 	private Animation runningAnimation;
 	private Animation idleAnimation;
 
 	public InteractableEntity nearestInteractable;
 
-	public Player(final GameApp game, MainScreen screen) {
-		super(game, screen, 300f, 700f, 269.85f, 473.2f);
-		super.fixture = Utilities.createPhysicsEntity(this, BodyType.DynamicBody, 30f, 0f, 20f, this);
+	public Player(GameApp game, MainScreen screen) {
+		super(game, screen, 300f, 700f, 269.85f, 473.2f, true, "textures/global/player/player.png");
+		super.image.setBounds(x - (width / 2), y - (height / 2), width, height);
+		
+		super.fixture = Utilities.createPhysicsEntity(this, BodyType.DynamicBody, true, 30f, 0f, 20f);
 		super.body = fixture.getBody();
 
 		focus = true;
 		idleTimeWait = 15000;
 		idleTimeWait = 5000;
 
-		image = new Image(new Texture(Gdx.files.internal("textures/global/player/player.png")));
-		image.setBounds(x - (width / 2), y - (height / 2), width, height);
-		image.setUserObject(this);
-
-		screen.getWorldStage().addActor(image);
 		game.getInputPoller().addInputSource(this);
-
+		
 	}
+	
 
 	@Override
 	public void tick() {

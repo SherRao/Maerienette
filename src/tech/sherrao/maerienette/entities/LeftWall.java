@@ -17,8 +17,9 @@ public class LeftWall extends Entity {
 	private Color color;
 
 	public LeftWall(GameApp game, MainScreen screen) {
-		super(game, screen, 0f, 50f, 25f, screen.getWorldHeight() - 50f);
-		super.fixture = Utilities.createPhysicsEntity(this, BodyType.StaticBody, 10f, 0f, 20f, this);
+		super(game, screen, 0f, 50f, 25f, screen.getWorldHeight() - 50f, true);
+		super.fixture = Utilities.createPhysicsEntity(this, BodyType.StaticBody, true, 10f, 0f, 20f);
+		super.image.setUserObject(true);
 		fixture.setSensor(false);
 
 		super.body = fixture.getBody();

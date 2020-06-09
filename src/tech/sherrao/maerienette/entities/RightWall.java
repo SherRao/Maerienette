@@ -17,8 +17,8 @@ public class RightWall extends Entity {
 	private Color color;
 
 	public RightWall(GameApp game, MainScreen screen) {
-		super(game, screen, screen.getWorldWidth() - 25f, 50f, 25f, screen.getWorldHeight() - 50f);
-		super.fixture = Utilities.createPhysicsEntity(this, BodyType.StaticBody, 10f, 0f, 20f, this);
+		super(game, screen, screen.getWorldWidth() - 25f, 50f, 25f, screen.getWorldHeight() - 50f, true);
+		super.fixture = Utilities.createPhysicsEntity(this, BodyType.StaticBody, true, 10f, 0f, 20f);
 		fixture.setSensor(false);
 
 		super.body = fixture.getBody();

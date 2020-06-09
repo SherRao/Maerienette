@@ -1,16 +1,10 @@
-package tech.sherrao.maerienette.screens;
+package tech.sherrao.maerienette;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import tech.sherrao.maerienette.GameApp;
-import tech.sherrao.maerienette.GameComponent;
-import tech.sherrao.maerienette.InputPoller;
 
 /**
  * Represents a screen within the game Controlled by {@link GameApp}
@@ -18,7 +12,7 @@ import tech.sherrao.maerienette.InputPoller;
  * @author Nausher Rao
  *
  */
-public abstract class AbstractScreen extends GameComponent implements Screen {
+public abstract class Screen extends GameComponent {
 
 	protected final InputPoller input;
 	protected final SpriteBatch batch;
@@ -26,7 +20,7 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	protected final OrthographicCamera camera;
 	protected final Viewport view;
 
-	public AbstractScreen(final GameApp game) {
+	public Screen(final GameApp game) {
 		super(game);
 
 		this.input = game.getInputPoller();
@@ -67,14 +61,12 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	 */
 	public abstract void dispose();
 
-	@Override
 	public final void render(float delta) {
 		update();
 		draw();
 
 	}
 
-	@Override
 	public void resize(int width, int height) {
 		view.update(width, height);
 		view.apply();
@@ -86,7 +78,6 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	 * Unused
 	 * 
 	 */
-	@Override
 	public final void show() {
 	}
 
@@ -95,7 +86,6 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	 * Unused
 	 * 
 	 */
-	@Override
 	public final void hide() {
 	}
 
@@ -104,7 +94,6 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	 * Unused
 	 * 
 	 */
-	@Override
 	public final void pause() {
 	}
 
@@ -113,7 +102,6 @@ public abstract class AbstractScreen extends GameComponent implements Screen {
 	 * Unused
 	 * 
 	 */
-	@Override
 	public final void resume() {
 	}
 

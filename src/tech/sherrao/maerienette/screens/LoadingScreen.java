@@ -9,8 +9,9 @@ import com.badlogic.gdx.utils.Align;
 
 import tech.sherrao.maerienette.Assets;
 import tech.sherrao.maerienette.GameApp;
+import tech.sherrao.maerienette.Screen;
 
-public class LoadingScreen extends AbstractScreen {
+public class LoadingScreen extends Screen {
 
 	private Assets assets;
 	private Stage stage;
@@ -18,7 +19,7 @@ public class LoadingScreen extends AbstractScreen {
 	private Label status;
 	private Label currentlyLoading;
 
-	public LoadingScreen(final GameApp game) {
+	public LoadingScreen(GameApp game) {
 		super(game);
 
 	}

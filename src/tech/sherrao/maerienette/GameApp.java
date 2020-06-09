@@ -14,17 +14,18 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import tech.sherrao.maerienette.screens.AbstractScreen;
 import tech.sherrao.maerienette.screens.MainScreen;
 import tech.sherrao.maerienette.utils.Utilities;
 
 public class GameApp implements ApplicationListener {
 
 	/** General */
+	private Logger logger;
 	private SpriteBatch batch;
 	private ShapeRenderer shape;
 	private OrthographicCamera camera;
@@ -32,8 +33,8 @@ public class GameApp implements ApplicationListener {
 	private InputPoller input;
 	private Assets assets;
 	
-	private ObjectMap<String, AbstractScreen> screens;
-	private AbstractScreen screen;
+	private ObjectMap<String, Screen> screens;
+	private Screen screen;
 
 	/** Overlay */
 	private Skin skin;
@@ -52,7 +53,8 @@ public class GameApp implements ApplicationListener {
 	@Override
 	public void create() {
 		Box2D.init();
-
+		
+		logger = new Logger("Maerienette/GameApp", Logger.DEBUG);
 		batch = new SpriteBatch();
 		shape = new ShapeRenderer();
 		camera = new OrthographicCamera();
@@ -97,34 +99,39 @@ public class GameApp implements ApplicationListener {
 
 	@Override
 	public void dispose() {
+		logger.info("Dispose() called. Disposing loaded screen and all other resources.");
+
 		changeScreen(null);
 		batch.dispose();
 		shape.dispose();
-
 		skin.dispose();
 
 	}
 
 	@Override
 	public void resize(int width, int height) {
+		logger.info("Resize() called. Updating viewport and screen resolutions.");
+
 		view.update(width, height);
 		view.apply();
-
 		screen.resize(width, height);
 
 	}
 
 	@Override
 	public void pause() {
+		logger.info("Pause() called");
 
 	}
 
 	@Override
 	public void resume() {
+		logger.info("Resume() called");
 
 	}
 
-	public void changeScreen(AbstractScreen newScreen) {
+	public void changeScreen(Screen newScreen) {
+		logger.info( (newScreen == null ? "Removing screen" : "Changing screen to " + newScreen.getClass().getSimpleName()) );
 		if(screen != null)
 			screen.dispose();
 
@@ -137,12 +144,12 @@ public class GameApp implements ApplicationListener {
 	}
 
 	public void stop() {
-		changeScreen(null);
+		logger.info("Stopping game");
 		Gdx.app.exit();
 
 	}
 
-	public AbstractScreen findScreen(String name) {
+	public Screen findScreen(String name) {
 		return null;
 
 	}

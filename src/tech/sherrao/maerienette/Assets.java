@@ -17,7 +17,7 @@ public class Assets extends GameComponent {
 	private AssetManager assets;
 	private ObjectMap<String, Skin> skins;
 
-	public Assets(final GameApp game) {
+	public Assets(GameApp game) {
 		super(game);
 
 		this.assets = new AssetManager();

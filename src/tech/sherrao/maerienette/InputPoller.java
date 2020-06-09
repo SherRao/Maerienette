@@ -16,7 +16,7 @@ public class InputPoller extends GameComponent {
 	private final InputMultiplexer inputs;
 	private Map<String, Integer> keyMap;
 
-	public InputPoller(final GameApp game) {
+	public InputPoller(GameApp game) {
 		super(game);
 
 		this.inputs = new InputMultiplexer();

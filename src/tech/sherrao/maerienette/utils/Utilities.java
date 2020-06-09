@@ -42,13 +42,8 @@ public abstract class Utilities {
 
 	}
 
-	public static Fixture createPhysicsEntity(World world, BodyType type, float x, float y, Object... data) {
-		return Utilities.createPhysicsEntity(world, type, x, y, 1f, 1f, 1f, data);
-
-	}
-
-	public static Fixture createPhysicsEntity(Entity entity, BodyType type, float density, float restitution,
-			float friction, Object... data) {
+	public static Fixture createPhysicsEntity(Entity entity, BodyType type, boolean isEssential, float density,
+			float restitution, float friction) {
 		float physicsHWidth = (entity.getWidth() / 2) / MainScreen.PPM;
 		float physicsHHeight = (entity.getHeight() / 2) / MainScreen.PPM;
 
@@ -70,17 +65,16 @@ public abstract class Utilities {
 		Body body = entity.getWorld().createBody(bodyDef);
 		Fixture fixture = body.createFixture(fixtureDef);
 
-		if(data.length > 0) {
-			body.setUserData(data[0]);
-			fixture.setUserData(data[0]);
-		}
+		body.setUserData(isEssential);
+		fixture.setUserData(isEssential);
 
 		shape.dispose();
 		return fixture;
 
 	}
 
-	public static Fixture createPhysicSensor(World world, float x, float y, float detectionRadius, Object... data) {
+	public static Fixture createPhysicSensor(World world, float x, float y, boolean isEssential,
+			float detectionRadius) {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set(x / MainScreen.PPM, y / MainScreen.PPM);
@@ -99,10 +93,8 @@ public abstract class Utilities {
 		Body body = world.createBody(bodyDef);
 		Fixture fixture = body.createFixture(fixtureDef);
 
-		if(data.length > 0) {
-			body.setUserData(data);
-			fixture.setUserData(data);
-		}
+		body.setUserData(isEssential);
+		fixture.setUserData(isEssential);
 
 		shape.dispose();
 		return fixture;
@@ -112,20 +104,19 @@ public abstract class Utilities {
 	public static void screenshot() {
 		byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(),
 				Gdx.graphics.getBackBufferHeight(), true);
-		for(int i = 4; i < pixels.length; i += 4) {
+		for (int i = 4; i < pixels.length; i += 4) {
 			pixels[i - 1] = (byte) 255;
 		}
 
 		File folder = new File("screenshots/");
-		if(!folder.exists())
+		if (!folder.exists())
 			folder.mkdir();
 
 		File file = new File(folder, System.currentTimeMillis() + ".png");
-		if(!file.exists())
+		if (!file.exists())
 			try {
 				file.createNewFile();
-			} catch(IOException e) {
-				// TODO Auto-generated catch block
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
