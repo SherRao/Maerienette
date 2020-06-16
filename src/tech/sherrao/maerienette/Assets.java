@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -28,7 +29,7 @@ public class Assets extends GameComponent {
 	public void queueAssets() {
 		if(assets.isFinished())
 			throw new GdxRuntimeException("Can't queue assets once they've finished loading!");
-
+		
 		// Loads textures from the "textures' folder
 		for(FileHandle file : Gdx.files.internal("textures/").list())
 			assets.load(new AssetDescriptor<Sprite>(file, Sprite.class));
@@ -47,6 +48,8 @@ public class Assets extends GameComponent {
 
 	}
 
+	public TextureRegion
+	
 	public int update() {
 		if(assets.isFinished())
 			throw new GdxRuntimeException("Can't loading assets if they've already been loaded!");
